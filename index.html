@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#155eef">
+  <title>WorkRover — Scaling Long-Horizon Cowork Agent Training</title>
+  <meta name="description" content="WorkRover trains long-horizon cowork agents through harness-driven environment synthesis, recursive environment evolution, and verifier-to-turn credit assignment.">
+  <link rel="canonical" href="https://workrover.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WorkRover: Scaling Long-Horizon Cowork Agent Training">
+  <meta property="og:description" content="Recursive environment evolution and verified workspace progress for training long-horizon cowork agents.">
+  <meta property="og:url" content="https://workrover.github.io/">
+  <meta property="og:image" content="https://workrover.github.io/workrover-logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="results-data.js" defer></script>
+  <script src="main.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"ScholarlyArticle","headline":"WorkRover: Scaling Long-Horizon Cowork Agent Training Via Recursive Environment Evolution","name":"WorkRover","url":"https://workrover.github.io/","datePublished":"2026","author":[{"@type":"Person","name":"Hang He"},{"@type":"Person","name":"Linting Wang"},{"@type":"Person","name":"Guanming Liu"},{"@type":"Person","name":"Bo Mao"},{"@type":"Person","name":"Jinxiu Liu"},{"@type":"Person","name":"Yiran Suo"},{"@type":"Person","name":"Maosen Zhou"},{"@type":"Person","name":"Zhiheng Xi"},{"@type":"Person","name":"Guanting Dong"},{"@type":"Person","name":"Zhou Shao"},{"@type":"Person","name":"Rui Zheng"},{"@type":"Person","name":"Jie Zhou"},{"@type":"Person","name":"Chengcheng Wan"},{"@type":"Person","name":"Tao Gui"},{"@type":"Person","name":"Qi Zhang"},{"@type":"Person","name":"Xipeng Qiu"},{"@type":"Person","name":"Xuanjing Huang"}],"encoding":{"@type":"MediaObject","contentUrl":"https://workrover.github.io/workrover.pdf","encodingFormat":"application/pdf"}}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="nav-brand" href="#top" aria-label="WorkRover home"><img src="workrover-logo.png" alt="WorkRover" width="150" height="34"></a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a href="#overview">Overview</a><a href="#method">Method</a><a href="#results">Results</a><a href="#examples">Examples</a><a href="#citation">BibTeX</a>
+        <a class="nav-paper" href="workrover.pdf" target="_blank" rel="noopener">Read the paper <span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero container" id="top" aria-labelledby="paper-title">
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Long-horizon cowork agents</p>
+      <img class="hero-logo" src="workrover-logo.png" alt="WorkRover" width="400" height="85" fetchpriority="high">
+      <h1 id="paper-title">Scaling Long-Horizon Cowork Agent Training<br class="desktop-break"> Via Recursive Environment Evolution</h1>
+      <div class="authors" aria-label="Authors">
+        <span>Hang He<sup>*</sup></span><span>Linting Wang<sup>*</sup></span><span>Guanming Liu<sup>*</sup></span><span>Bo Mao<sup>*</sup></span><span>Jinxiu Liu<sup>*</sup></span><span>Yiran Suo<sup>*</sup></span>
+        <span>Maosen Zhou</span><span>Zhiheng Xi</span><span>Guanting Dong</span><span>Zhou Shao<sup>†</sup></span><span>Rui Zheng</span><span>Jie Zhou</span>
+        <span>Chengcheng Wan</span><span>Tao Gui<sup>†</sup></span><span>Qi Zhang</span><span>Xipeng Qiu</span><span>Xuanjing Huang</span>
+      </div>
+      <p class="affiliations">Fudan University · East China Normal University · Renmin University of China<br>Shanghai Qiji Zhifeng Co., Ltd. · Shanghai Innovation Institute</p>
+      <p class="author-notes"><sup>*</sup> Equal contribution &nbsp; <sup>†</sup> Corresponding authors</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="workrover.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h5"/></svg> Paper <span aria-hidden="true">↗</span></a>
+        <a class="button button-dark" href="https://github.com/workrover" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.3-4.3-2-6-2m12 5v-3.9a3.4 3.4 0 0 0-.9-2.7c3-.3 6.2-1.5 6.2-6.9a5.4 5.4 0 0 0-1.5-3.7A5 5 0 0 0 18.7 1S17.5.6 15 2.5a13 13 0 0 0-6 0C6.5.6 5.3 1 5.3 1a5 5 0 0 0-.1 3.8 5.4 5.4 0 0 0-1.5 3.7c0 5.4 3.2 6.6 6.2 6.9a3.4 3.4 0 0 0-.9 2.7V22"/></svg> GitHub</a>
+        <a class="button button-secondary" href="#results"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-5M12 16V4M17 16V8"/></svg> Results</a>
+        <a class="button button-secondary" href="#citation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 6-5 6 5 6m8-12 5 6-5 6m-3-13-2 14"/></svg> BibTeX</a>
+      </div>
+      <div class="institution-marks" aria-label="Participating institutions and research groups">
+        <img src="qiji.webp" alt="Shanghai Qiji Zhifeng" width="58" height="58">
+        <img src="fudan.webp" alt="Fudan University" width="58" height="58">
+        <img src="fudannlp.webp" alt="Fudan NLP" width="58" height="58">
+        <img src="ecnu.webp" alt="East China Normal University" width="58" height="58">
+        <img src="renmin.webp" alt="Renmin University of China" width="58" height="58">
+        <img src="sii.webp" alt="Shanghai Innovation Institute" width="58" height="58">
+      </div>
+      <div class="headline-results" aria-label="Gains over Qwen3.5-35B-A3B">
+        <div><span class="metric-label">JobBench</span><strong>36.89<span>%</span></strong><span class="metric-gain">+26.27 percentage points</span></div>
+        <div><span class="metric-label">OfficeQA Pro</span><strong>48.87<span>%</span></strong><span class="metric-gain">+29.32 percentage points</span></div>
+        <div><span class="metric-label">GDPval v2</span><strong>1218<span> Elo</span></strong><span class="metric-gain">+413.25 Elo points</span></div>
+      </div>
+      <p class="hero-result-note">WorkRover-35B-A3B · Improvements over the Qwen3.5-35B-A3B backbone</p>
+    </section>
+
+    <section class="section section-tint" id="overview" aria-labelledby="overview-title">
+      <div class="container">
+        <div class="section-heading"><p class="eyebrow">The idea</p><h2 id="overview-title">Better environments. More useful feedback.</h2><p>Train cowork agents by improving the environments they learn from.</p></div>
+        <div class="abstract prose">
+          <h3>Abstract</h3>
+          <p>Scaling interactive environments has become increasingly important for training long-horizon agents through reinforcement learning. These environments often require further testing and refinement after initial generation, and correcting defects in a task may also require updating its work context and verifier. However, existing construction pipelines offer limited support for such iterative refinement while keeping these components aligned.</p>
+          <p>We introduce <strong>WorkRover</strong>, a framework for training long-horizon cowork agents through <strong>recursive environment evolution</strong>. Harness-driven synthesis jointly builds and validates semantically aligned work contexts, executable tasks, and evidence-grounded verifiers. <strong>Factorial Compatibility Replay (FCR)</strong> evaluates combinations of component revisions and selects the smallest validated repair among tested candidates. <strong>Verifier-to-Turn Credit Assignment (VTCA)</strong> augments trajectory-level GRPO advantages with deterministic workspace-progress signals and assigns a bounded share of positive credit to prerequisite turns.</p>
+          <p>We post-train Qwen3.5-35B-A3B to obtain <strong>WorkRover-35B-A3B</strong>, improving over its backbone by <strong>26.27 percentage points on JobBench</strong>, <strong>29.32 points on OfficeQA Pro</strong>, and <strong>413.25 Elo points on GDPval v2</strong>.</p>
+        </div>
+        <div class="pipeline-cards">
+          <article><span class="step-number">01</span><h3>Construct</h3><p>Ground tasks in connected files, professional skills, and executable applications.</p><span class="card-tag">Harness-driven synthesis</span></article>
+          <article><span class="step-number">02</span><h3>Evolve</h3><p>Use execution feedback to repair task environments while keeping their components aligned.</p><span class="card-tag">Factorial Compatibility Replay</span></article>
+          <article><span class="step-number">03</span><h3>Learn</h3><p>Reward checked workspace progress and the earlier turns that supplied required evidence.</p><span class="card-tag">Verifier-to-Turn Credit Assignment</span></article>
+        </div>
+        <div class="dataset-stats">
+          <div><strong>30,115</strong><span>Verified SFT trajectories</span></div><div><strong>3,200</strong><span>RL tasks after filtering</span></div><div><strong>317</strong><span>Professional roles</span></div><div><strong>5</strong><span>External benchmarks</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="method" aria-labelledby="method-title">
+      <div class="container">
+        <div class="section-heading"><p class="eyebrow">How it works</p><h2 id="method-title">From a workspace to a training environment</h2><p>One harness coordinates construction, validation, repair, and learning.</p></div>
+        <figure class="paper-figure">
+          <button class="figure-open" data-figure="method-overview.webp" data-caption="Harness-driven construction and recursive environment evolution in WorkRover." aria-label="Expand the WorkRover framework figure"><img src="method-overview.webp" alt="WorkRover overview: work context construction, long-horizon task synthesis, verifier synthesis and validation, and recursive environment evolution." loading="lazy" width="2200" height="1319"><span class="zoom-label" aria-hidden="true">↗ Expand figure</span></button>
+          <figcaption><strong>Harness-driven construction.</strong> Work Contexts, Tasks, and Verifiers are built together, with recorded dependencies and independent validation.</figcaption>
+        </figure>
+        <div class="method-detail">
+          <div class="method-copy"><span class="method-label">FCR · Environment evolution</span><h3>Repair the components together</h3><p>A task failure can reveal a mismatch across its files, instructions, execution harness, or verifier. FCR freezes repair proposals, replays their combinations with dependency-induced updates, and checks the resulting environments.</p><ul class="check-list"><li>Preserve task requirements and evaluation constraints.</li><li>Select the smallest validated repair among tested candidates.</li><li>Recheck affected tasks for regressions.</li></ul></div>
+          <div class="repair-summary"><span class="mini-label">Matched repair budget caps</span><div class="repair-rate"><span>Natural defects · Safe resolution rate</span><div class="rate-line"><span>Local-only</span><div><i style="width:42%"></i></div><strong>42.0%</strong></div><div class="rate-line highlight"><span>FCR</span><div><i style="width:73%"></i></div><strong>73.0%</strong></div></div><div class="repair-facts"><div><strong>81.2%</strong><span>Controlled-defect SRR</span></div><div><strong>0.7%</strong><span>Cross-task regression</span></div></div><p>Rates from the maintenance evaluation in Table 2. Model-token cost is higher for FCR than for local-only repair.</p></div>
+        </div>
+        <figure class="paper-figure compact-figure">
+          <button class="figure-open" data-figure="environment-evolution.webp" data-caption="FCR mechanism, stability, and repeated evolution." aria-label="Expand the FCR analysis figure"><img src="environment-evolution.webp" alt="FCR analysis of joint repair necessity, outcomes on natural defects, stability across three generations, and rollout success over five repair iterations." loading="lazy" width="2200" height="617"><span class="zoom-label" aria-hidden="true">↗ Expand figure</span></button>
+          <figcaption><strong>Repeated environment evolution.</strong> Joint revisions, sealed audits, and fresh rollouts evaluate the reliability of each repair.</figcaption>
+        </figure>
+        <div class="method-copy wide-copy"><span class="method-label">VTCA · Turn-level learning</span><h3>Give credit to checked progress</h3><p>Frozen deterministic checks compare workspace states before and after each turn. Positive progress stays primarily with the turn that produced it, with a bounded share assigned to earlier turns whose exact tool outputs or artifact versions were used. Negative increments stay local. These signals shape GRPO advantages without intermediate judge calls.</p></div>
+        <figure class="paper-figure compact-figure">
+          <button class="figure-open" data-figure="turn-credit.webp" data-caption="Verifier-to-Turn Credit Assignment: checked progress and dependency-based prerequisite allocations." aria-label="Expand the VTCA training figure"><img src="turn-credit.webp" alt="VTCA training pipeline: same-task rollout sampling, terminal evaluation, workspace progress checks, prerequisite attribution, and turn-balanced policy updates." loading="lazy" width="2200" height="897"><span class="zoom-label" aria-hidden="true">↗ Expand figure</span></button>
+          <figcaption><strong>Verifier-to-Turn Credit Assignment.</strong> At least half of each positive progress increment remains with the producing turn; only recorded direct dependencies qualify for prerequisite credit.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="results" aria-labelledby="results-title">
+      <div class="container">
+        <div class="section-heading"><p class="eyebrow">Experiments</p><h2 id="results-title">Transfer across five cowork benchmarks</h2><p>Occupational tasks, professional deliverables, app workflows, and document reasoning.</p></div>
+        <div class="results-panel">
+          <div class="results-controls"><div class="segmented-control" aria-label="Model groups"><button class="active" data-group="small" aria-pressed="true">27–35B open weights</button><button data-group="large" aria-pressed="false">&gt;400B open weights</button><button data-group="proprietary" aria-pressed="false">Proprietary</button><button data-group="all" aria-pressed="false">All models</button></div><label class="search-label"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="model-search" type="search" placeholder="Find a model" aria-label="Filter models by name"></label></div>
+          <div class="benchmark-tabs" aria-label="Benchmark selection"><button class="active" data-benchmark="0" aria-pressed="true">JobBench</button><button data-benchmark="1" aria-pressed="false">GDPval v2</button><button data-benchmark="2" aria-pressed="false">AutomationBench</button><button data-benchmark="3" aria-pressed="false">WorkBuddy Bench</button><button data-benchmark="4" aria-pressed="false">OfficeQA Pro</button></div>
+          <div class="chart-header"><h3 id="chart-title">JobBench</h3><span id="chart-unit">Score (%) · higher is better</span></div>
+          <div class="benchmark-chart" id="benchmark-chart" aria-label="Benchmark score comparison"></div>
+          <noscript><p class="empty-state">View all benchmark scores in Table 1 of <a href="workrover.pdf">the paper</a>.</p></noscript>
+          <div class="table-heading"><h3>Reported model scores</h3><a id="export-csv" class="text-button" href="workrover-results.csv" download title="Download all 14 reported model scores">All scores (CSV) <span aria-hidden="true">↓</span></a></div>
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Benchmark results table, horizontally scrollable on small screens">
+            <table class="results-table"><thead><tr><th scope="col">Model</th><th scope="col" aria-sort="descending"><button data-sort="0" aria-label="Sort by JobBench">JobBench<span>% <i>↓</i></span></button></th><th scope="col" aria-sort="none"><button data-sort="1" aria-label="Sort by GDPval v2">GDPval v2<span>Elo <i>↕</i></span></button></th><th scope="col" aria-sort="none"><button data-sort="2" aria-label="Sort by AutomationBench">Automation<span>% <i>↕</i></span></button></th><th scope="col" aria-sort="none"><button data-sort="3" aria-label="Sort by WorkBuddy Bench">WorkBuddy<span>Office (%) <i>↕</i></span></button></th><th scope="col" aria-sort="none"><button data-sort="4" aria-label="Sort by OfficeQA Pro">OfficeQA Pro<span>% <i>↕</i></span></button></th></tr></thead><tbody id="results-body"></tbody></table>
+          </div>
+          <p class="results-count" id="results-count" aria-live="polite"></p>
+        </div>
+        <p class="comparison-note"><strong>Reading these results.</strong> Scores reproduce Table 1 of the manuscript. Published reference scores retain their source-specific task subsets, evaluators, and harnesses. GDPval v2 is measured in Elo; the other four benchmarks are percentages. A dash indicates an unreported score.</p>
+        <div class="ablation-heading"><h3>What does turn-level feedback add?</h3><p>With the SFT initialization, task and seed schedules, and rollout budget fixed, VTCA improves over episode-only GRPO on all five benchmarks.</p></div>
+        <figure class="paper-figure compact-figure">
+          <button class="figure-open" data-figure="vtca-ablation.webp" data-caption="VTCA and episode-only GRPO under matched training and rollout settings." aria-label="Expand the VTCA ablation results"><img src="vtca-ablation.webp" alt="Ablation results comparing the backbone, SFT, episode-only GRPO, and VTCA across five cowork benchmarks." loading="lazy"><span class="zoom-label" aria-hidden="true">↗ Expand figure</span></button>
+          <figcaption><strong>Controlled training comparison.</strong> Both RL methods improve on SFT, with additional gains from verifier-grounded turn credit.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="examples" aria-labelledby="examples-title">
+      <div class="container">
+        <div class="section-heading"><p class="eyebrow">Inside the workspaces</p><h2 id="examples-title">Files, tools, and outcomes that stay connected</h2><p>Recorded examples from the manuscript show how professional work spans multiple artifacts.</p></div>
+        <div class="case-tabs" role="tablist" aria-label="Workspace examples"><button id="tab-handoff" role="tab" aria-selected="true" aria-controls="case-handoff" data-case="handoff" class="active">Executive handoff</button><button id="tab-course" role="tab" aria-selected="false" aria-controls="case-course" data-case="course" tabindex="-1">Course design</button><button id="tab-policy" role="tab" aria-selected="false" aria-controls="case-policy" data-case="policy" tabindex="-1">Policy research</button></div>
+        <div class="case-panel" id="case-handoff" role="tabpanel" aria-labelledby="tab-handoff">
+          <div class="case-copy"><span class="case-label">Recorded agent execution</span><h3>Quarterly executive handoff</h3><p>An agent checks five regional revenue rows, registers a vendor, updates the Q2 access policy, retires the archived Q1 policy, and validates five exports.</p><div class="artifact-tags"><span>Revenue workbook</span><span>Vendor registry</span><span>Access policy</span><span>Executive report</span></div><div class="case-callout"><strong>4 goal groups passed</strong><span>Archived score: 0.946. The final report retains a database lock wait and a stale export alias as follow-ups. Validation covers artifact structure and content; visual review was unavailable.</span></div></div>
+          <button class="figure-open case-image" data-figure="case-handoff.webp" data-caption="Recorded quarterly executive handoff: contexts, rollout stages, evidence, deliverables, and validation scope." aria-label="Expand the quarterly handoff example"><img src="case-handoff.webp" alt="Recorded quarterly executive handoff showing the task, 56-turn Hermes execution, revenue evidence, exports, and archived evaluation." loading="lazy" width="2200" height="2481"><span class="zoom-label" aria-hidden="true">↗ Expand example</span></button>
+        </div>
+        <div class="case-panel case-wide" id="case-course" role="tabpanel" aria-labelledby="tab-course" hidden>
+          <div class="case-copy"><span class="case-label">Recorded research · Proposed file task</span><h3>Prompt-engineering course design</h3><p>A recorded research branch writes a teaching design and adds paper citations. A proposed task reuses captured CoT, SoT, and DSPy source archives to produce a comparison workbook and three lab briefs, with baselines and grading rubrics.</p><div class="artifact-tags"><span>Paper archives</span><span>Comparison workbook</span><span>Lab briefs</span><span>Grading rubrics</span></div><p class="case-note">Proposed tasks require fresh demonstrator execution and independent verifier checks before admission.</p></div>
+          <button class="figure-open case-image" data-figure="case-course.webp" data-caption="Recorded research example 1875 and its proposed course-design workspace task." aria-label="Expand the course design example"><img src="case-course.webp" alt="Research example 1875: prompt-engineering course design, recorded workflow, source files, and proposed deliverables." loading="lazy" width="2200" height="1076"><span class="zoom-label" aria-hidden="true">↗ Expand example</span></button>
+        </div>
+        <div class="case-panel case-wide" id="case-policy" role="tabpanel" aria-labelledby="tab-policy" hidden>
+          <div class="case-copy"><span class="case-label">Recorded research · Proposed file task</span><h3>Policy research on older adults living alone</h3><p>A proposed task works with two IPSS source workbooks, preserving category definitions, units, and source-sheet references. The recorded research includes a policy memo observed through tool readbacks.</p><div class="artifact-tags"><span>IPSS workbooks</span><span>Source-sheet references</span><span>Policy memo</span></div><p class="case-note">Source-page references associate files with the research; they do not establish per-file downloads in the recorded traces.</p></div>
+          <button class="figure-open case-image" data-figure="case-policy.webp" data-caption="Recorded research example 1781 and its proposed policy-research workspace task." aria-label="Expand the policy research example"><img src="case-policy.webp" alt="Research example 1781: policy research about older adults living alone, with captured workbooks and proposed file tasks." loading="lazy" width="2200" height="1076"><span class="zoom-label" aria-hidden="true">↗ Expand example</span></button>
+        </div>
+        <div class="skills-block"><div><p class="eyebrow">A broad skill foundation</p><h3>Professional roles meet executable capabilities</h3><p>The synthesis resources include <strong>21,444 app skills</strong>, <strong>5,918 file skills</strong>, and <strong>36,064 job skills</strong> across 317 roles. File relations and compatible operations help assemble executable workspaces.</p></div><figure><button class="figure-open" data-figure="skill-coverage.webp" data-caption="Category coverage of the app, file, and job skill libraries." aria-label="Expand the skill library coverage figure"><img src="skill-coverage.webp" alt="Treemaps of app skills, file skills, and job skills by category." loading="lazy" width="2200" height="715"></button><figcaption>Largest categories in each skill library; smaller categories are grouped as Other.</figcaption></figure></div>
+      </div>
+    </section>
+
+    <section class="section section-tint citation-section" id="citation" aria-labelledby="citation-title">
+      <div class="container citation-container"><div class="section-heading"><p class="eyebrow">Reference</p><h2 id="citation-title">Cite WorkRover</h2><p>If this work is useful to your research, please cite the manuscript.</p></div><div class="citation-box"><div class="code-header"><span>BibTeX</span><button class="copy-button" id="copy-citation">Copy citation <span aria-hidden="true">⧉</span></button></div><pre><code id="bibtex">@misc{he2026workrover,
+  title = {WorkRover: Scaling Long-Horizon Cowork Agent Training
+           Via Recursive Environment Evolution},
+  author = {Hang He and Linting Wang and Guanming Liu and Bo Mao
+            and Jinxiu Liu and Yiran Suo and Maosen Zhou and Zhiheng Xi
+            and Guanting Dong and Zhou Shao and Rui Zheng and Jie Zhou
+            and Chengcheng Wan and Tao Gui and Qi Zhang and Xipeng Qiu
+            and Xuanjing Huang},
+  year = {2026},
+  url = {https://workrover.github.io/}
+}</code></pre></div><p id="copy-status" class="copy-status" role="status" aria-live="polite"></p><div class="citation-actions"><a href="workrover.pdf" class="text-button" download>Download paper ↓</a><a href="https://github.com/workrover/workrover.github.io" class="text-button" target="_blank" rel="noopener">Website source ↗</a></div></div>
+    </section>
+  </main>
+  <footer class="footer"><div class="container"><a href="#top" aria-label="Return to top"><img src="workrover-logo.png" alt="WorkRover" width="135" height="30"></a><p>© 2026 WorkRover authors. Figures and results from the manuscript.</p><p class="design-credit">Research-page inspiration: <a href="https://localsearchbench.github.io/" target="_blank" rel="noopener">LocalSearchBench</a> and <a href="https://mmsearch.github.io/" target="_blank" rel="noopener">MMSearch</a>.</p></div></footer>
+  <dialog id="figure-dialog" class="figure-dialog" aria-label="Expanded paper figure"><div class="dialog-toolbar"><p id="dialog-caption"></p><button id="close-dialog" aria-label="Close expanded figure">×</button></div><div class="dialog-image-scroll"><img id="dialog-image" alt=""></div><a id="download-figure" download class="text-button">Download figure ↓</a></dialog>
+</body>
+</html>

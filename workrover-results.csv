@@ -1,0 +1,15 @@
+Model,Model group,JobBench (%),GDPval v2 (Elo),AutomationBench (%),WorkBuddy Bench (Office) (%),OfficeQA Pro (%)
+GPT-5.5,proprietary,38.30,1395.85,22.70,86.05,57.10
+Claude Opus 4.7,proprietary,44.50,1395.78,9.90,92.51,46.60
+Gemini 3.1 Pro Preview,proprietary,15.90,903.94,37.54,,39.10
+Kimi K3,large,54.27,1572.42,46.67,72.18,63.30
+DeepSeek-V4-Pro,large,54.10,1493.31,31.80,78.71,65.40
+GLM-5.2,large,43.40,1417.62,26.17,79.57,41.40
+MiniMax-M3,large,,1303.96,15.90,76.30,45.10
+Qwen3.6-27B,small,21.80,1068.87,9.67,65.65,44.36
+Granite-4.2-30B,small,1.64,721.01,0.02,54.18,12.03
+Muse-Glimmer-30B,small,11.82,892.72,6.83,57.45,24.06
+Nex-N2-mini,small,3.82,1097.03,5.70,25.87,26.32
+Occamy-1.0,small,34.27,1128.00,27.60,66.65,48.10
+Qwen3.5-35B-A3B,small,10.62,804.75,6.00,60.50,19.55
+WorkRover-35B-A3B,small,36.89,1218.00,28.67,74.13,48.87
